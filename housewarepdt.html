@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسواق حبيبه المركزية - ادوات منزلية</title>
+
+    <link href="Logo.png" rel="icon">
+    <link href="style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="nav">
+            <a href="index.html">السلع</a>
+            <a href="index.html">العروض</a>
+            <a href="index.html">خدمات</a>
+            <a href="index.html">للتواصل</a>
+        </nav>
+        <a href="index.html" class="logo">اسواق حبيبه المركزية</a>
+    </header>
+
+    <section class="main">
+        <div>
+            <h2>مثل عصا قشاطه وليف جلي وشفرات حيلاقه والكثير<br><span>ادوات منزلية</span></h2>
+        </div>
+    </section>
+
+    <section class="cards contact" id="contact">
+        <h2 class="title">جميع المنتجات</h2>
+        <div class="content" id="content">
+            <div class="card">
+                <div class="icon">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm9pp2ufovxRCT2xkZPQL1EnyQOPfqWjm3jA&usqp=CAU" />
+                </div>
+                <div class="info">
+                    <h3>ارز تايقر 3.5 كيلو</h3>
+                    <h4>$4.15</h4>
+                    <a href="#" class="main-btn">add Cart</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm9pp2ufovxRCT2xkZPQL1EnyQOPfqWjm3jA&usqp=CAU" />
+                </div>
+                <div class="info">
+                    <h3>ارز تايقر 3.5 كيلو</h3>
+                    <h4>$4.15</h4>
+                    <a href="#" class="main-btn">add Cart</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="icon">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm9pp2ufovxRCT2xkZPQL1EnyQOPfqWjm3jA&usqp=CAU" />
+                </div>
+                <div class="info">
+                    <h3>ارز تايقر 3.5 كيلو</h3>
+                    <h4>$4.15</h4>
+                    <a class="main-btn-nstock">Not Stock</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="#link"><i class="fa-brands fa-square-facebook"></i></a>
+            <a href="#link"><i class="fa-solid fa-house"></i></a>
+            <a href="#link"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#link"><i class="fa-solid fa-cart-shopping"></i></a>
+        </div>
+        <p class="footer-title"><span>اسواق حبيبه المركزية</span>@ جميع الحقوق محفوضه</p>
+    </footer>
+
+
+    <script type="module">
+        /*<div class="pro">
+                <img src="https://cdnprod.mafretailproxy.com/sys-master-root/h27/hee/48235645206558/1700Wx1700H_753927_main.jpg" alt="">
+                <div class="dis">
+                    <h5>zeit al 3amer 3.5Lt</h5>
+                    <h4>$8.90</h4>
+                </div>
+            */
+        //<span>zeit AL-3amer</span>
+        //background-image: linear-gradient(rgba(0, 0, 0, 0.800), rgba(0, 0, 0, 0.800)),url(BackGround.jpeg);
+        import{ initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"
+        import{ getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+
+        const appSettings = {
+            databaseURL: "https://habiba-central-markets-default-rtdb.europe-west1.firebasedatabase.app/"
+        }
+
+        const app = initializeApp(appSettings);
+        const database = getDatabase(app);
+        const goodsInDB = ref(database, "Goods/items");
+
+        const productID = document.querySelector("#content");
+
+        const sortListBy = 7;
+
+        onValue(goodsInDB, function(snapshot){
+            let goodsArray = Object.values(snapshot.val());
+
+            productID.innerHTML = "";
+            //console.table(goodsArray);
+
+            for (let i = 0; i < goodsArray.length; i++){
+                let good = goodsArray[i];
+
+                //console.log(good);
+
+                AddItem(good.title, good.price, good.urlIcon, good.inStock, good.sortBy);
+
+                //hh.innerHTML = good.price;
+            }
+        })
+
+        function AddItem(title, price, urlIcon, inStock, sortBy){
+            if(sortListBy == sortBy){
+                var item;
+
+                if(inStock){
+                    item = '<div class="card"><div class="icon"><img src="' + urlIcon +'" /></div><div class="info"><h3>' + title + '</h3><h4>$' + price + '</h4><a href="#" class="main-btn">اضافة للسلة</a></div></div>'
+                }
+                else{
+                    item = '<div class="card"><div class="icon"><img src="' + urlIcon +'" /></div><div class="info"><h3>' + title + '</h3><h4>$' + price + '</h4><a class="main-btn-nstock">غير متوفر</a></div></div>'
+                }
+
+                productID.innerHTML += item;
+            }
+        }
+
+      </script>
+</body>
+</html>
